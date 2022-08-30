@@ -1,0 +1,198 @@
+﻿<!doctype html>
+<html>
+<head>
+ <script src="js/config.js"></script>
+	<script src="js/jquery.min.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="font/bootstrap-icons.css">
+    <title>Liste des conservations fonciers</title>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg  bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand text-danger" href="#">ANCFCC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="index.html">TITREFONCIER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="cf-liste.html">CONSERVATIONFONCIER</a>
+                    </li>
+
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+
+
+        <!--- Ligne 1 : Titre page & Bouton nouveau-->
+        <div class="row mb-5 mt-5">
+            <div class="col-8">
+                <h3 class="container text-primary ">Liste des conservations fonciers</h3>
+            </div>
+            <div class="col-4 text-start">
+                <a href="cf-fiche.html" class="btn btn-primary"><i class="bi bi-plus-square"></i>Nouveau</a>
+            </div>
+
+        </div>
+
+
+
+        <!--- Ligne 2 : Table-->
+        <div class="row">
+            <div class="col-12">
+                <table class=" table table-striped table-bordered border-primary border border-3 " id="tableConsv">
+                   <thead class="table-dark">
+                        <tr>
+
+                            <th scope="col" class="text-info">NOM</th>
+                            <th scope="col" style="width:120px;text-align:center" class="text-info">CODE</th>
+                            <th scope="col" style="width:120px;text-align:center" class="text-info">ACTIONS</th>
+                        </tr>
+                   </thead>
+                    <tbody></tbody>
+                </table>
+				<div id ="erreur" style="color:red"></div>
+            </div>
+			
+			<br>
+        <p style = "color : red"> </p>
+        <br >
+			
+        </div>
+
+    </div>
+   
+		
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <!--<script src="js/bootstrap.bundle.min.js"></script>-->
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    -->
+	<script>
+	
+	<!--get-->
+	var listeCf;
+	
+	$.ajax({
+	
+    url: urlBackend+'/CF',
+	
+    dataType: 'json',
+	
+    success: function(data) {
+	
+		remplirTable(data);
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+		listeCf = [];
+        //alert('Error: ' + textStatus + ' - ' + errorThrown);
+		//console.error("erreur = ",errorThrown);
+		$('#erreur').html(errorThrown);
+    }
+});
+
+
+
+
+                 $(document).ready(function () {
+        var CF = new Object();
+        CF.id = "";
+        CF.nom = "";
+		CF.code=""
+				
+				
+               $("#Save").click(function () {
+               $.ajax({
+                url: urlBackend+'/CF',
+                type: 'PUT',
+                dataType: 'json',
+                data: CF,
+                success: function (data, textStatus, xhr) {
+                    console.log(data);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+                }
+            });
+			});
+			});
+
+
+
+function edit(indice){
+var element = listeCf[indice];
+//console.log(element);
+window.location.href = urlFronend+"/cf-fiche.html?id="+element.id+"&nom="+element.nom+"&code="+element.code;
+}
+
+
+
+
+function remove(id) {
+ 
+
+
+     if(confirm('Deleting file. Are you sure?')) {
+	
+         $.ajax({
+             url: urlBackend + "/CF/"+id,
+             type: 'DELETE',
+         
+             dataType: 'json',
+			 //data: CF,
+             contentType: "application/json",
+             success: function (data, textStatus, xhr) {
+                 remplirTable(data);
+				 
+             },
+             error: function (xhr, textStatus, errorThrown) {
+                console.log('error in operation');
+             }
+         });
+     }
+}
+
+
+
+function remplirTable(data) {
+
+		listeCf= data;
+		$('#tableConsv tbody').empty();
+        for (var i=0; i<data.length; i++) {
+         
+		 
+		 var edit = '<a onclick="edit('+i+')"> <i class="bi bi-pencil-fill"></i> </a>  ';
+         var remove = '<a onclick="remove('+data[i].id+')"> <i class="bi bi-trash3-fill"></i> </a>';
+		 
+		   var row = $('<tr><td>' + data[i].nom + '</td><td>' + data[i].code + '</td><td>'+edit+remove+'</td></tr>');
+            
+			$('#tableConsv tbody').append(row);
+        }
+}
+</script>
+</body>
+</html>

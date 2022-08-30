@@ -1,0 +1,64 @@
+<html>
+<head>
+<script src="js/jquery.min.js"></script>
+</head>
+
+
+<body>
+<h1>Liste Cf en json :</h1>
+
+<table id="tableCf">
+    <tr>
+        <th>id</th>
+        <th>nom</th>
+        <th>Code</th>
+    </tr>
+
+</table>
+
+<div id ="erreur" style="color:red"></div>
+
+
+
+
+<!----Fotter --->
+<script>
+
+/*var xhttp = new XMLHttpRequest();
+xhttp.open("GET", "http://localhost/api/api/CF", true);
+xhttp.send();
+
+
+xhttp.onreadystatechange = function() {
+ 
+  if (this.readyState == 4 && this.status == 200) {
+    console.log("this.responseText = ",this.responseText);
+	document.getElementById("data").innerHTML = this.responseText;
+  }
+};
+
+//console.log("xhttp = ",xhttp); */
+
+
+$.ajax({
+    url: 'http://localhost/api/api/CF',
+    dataType: 'json',
+    success: function(data) {
+	
+        for (var i=0; i<data.length; i++) {
+         
+		   var row = $('<tr><td>' + data[i].id+ '</td><td>' + data[i].nom + '</td><td>' + data[i].code + '</td></tr>');
+            
+			$('#tableCf').append(row);
+        }
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+        //alert('Error: ' + textStatus + ' - ' + errorThrown);
+		//console.error("erreur = ",errorThrown);
+		$('#erreur').html(errorThrown);
+    }
+});
+</script>
+
+</body>
+</html>

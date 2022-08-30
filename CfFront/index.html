@@ -1,0 +1,209 @@
+﻿<!doctype html>
+<html>
+<head>
+ <script src="js/config.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="font/bootstrap-icons.css">
+    <title>Liste des Titres fonciers</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg  bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand text-danger" href="#">ANCFCC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">TITREFONCIER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cf-liste.html">CONSRVATIONFONCIER</a>
+                    </li>
+
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+   
+    
+    <div class=" container d-grid gap-2 d-md-block">
+
+        <div class="row mb-5 mt-5">
+            <div class="col-8">
+                <h3 class="container text-primary ">
+                    Liste des titres fonciers
+                </h3>
+            </div>
+            <div class="col-4 text-start">
+                <a href="titre-fiche.html" class="btn btn-primary"><i class="bi bi-plus-square"></i>Nouveau</a>
+            </div>
+
+        </div>
+
+        <table class=" container table table-striped table-bordered border-primary border border-3" id="tabletitre">
+            <thead class="table-dark">
+                <tr>
+
+                    <th scope="col" class="text-info">NUMERO</th>
+                    <th scope="col" class="text-info">TYPE</th>
+                    <th scope="col" class="text-info">INDICE</th>
+                    <th scope="col" class="text-info">INDICESPECIAL</th>
+                    <th scope="col" class="text-info">CF</th>
+                    <th scope="col" colspan="2" class="text-info">ACTIONS</th>
+                </tr>
+            </thead>
+           <tbody> </tbody>
+        </table>
+	
+		
+		<br>
+        <p style = "color : red"> </p>
+        <br >
+      
+
+        <!-- Optional JavaScript; choose one of the two! -->
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+       <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script> -->
+
+        <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+    -->
+	
+	
+	
+	<script>
+	
+	
+	<!--get-->
+	
+	var listeTitre;
+	
+	
+	$.ajax({
+	
+    url: urlBackend+'/TitreFoncier',
+	
+    dataType: 'json',
+	
+       success: function(data) {
+	
+		remplirTable(data);
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+	
+		listeTitre = [];
+        //alert('Error: ' + textStatus + ' - ' + errorThrown);
+		//console.error("erreur = ",errorThrown);
+		$('#erreur').html(errorThrown);
+    }
+});
+
+
+
+
+
+                 $(document).ready(function () {
+        var Titre = new Object();
+        Titre.id = "";
+        Titre.numero = "";
+		Titre.type="";
+		Titre.indice="";
+		Titre.indiceSpecial="";
+		Titre.cf.nom=""
+				
+				
+               $("#Save").click(function () {
+               $.ajax({
+                url: urlBackend+'/TitreFoncier',
+                type: 'PUT',
+                dataType: 'json',
+                data: Titre,
+                success: function (data, textStatus, xhr) {
+                    console.log(data);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+                }
+            });
+			});
+			});
+
+
+
+
+function edit(indice){
+var element = listeTitre[indice];
+//console.log(element);
+window.location.href = urlFronend+"/titre-fiche.html?id="+element.id+"&numero="+element.numero+"&type="+element.type+"&indice="+element.indice+"&indiceSpecial="+element.indiceSpecial+"&cf="+element.cf.nom;
+}
+
+
+
+	
+
+	
+	function remove(id) {
+ 
+
+
+     if(confirm('Deleting file. Are you sure?')) {
+	
+         $.ajax({
+             url: urlBackend + "/TitreFoncier/"+id,
+             type: 'DELETE',
+         
+             dataType: 'json',
+			 //data: CF,
+             contentType: "application/json",
+             success: function (data, textStatus, xhr) {
+                 remplirTable(data);
+				 
+             },
+             error: function (xhr, textStatus, errorThrown) {
+                console.log('error in operation');
+             }
+         });
+     }
+}
+	
+	
+	
+	
+	function remplirTable(data) {
+
+		listeTitre= data;
+		$('#tabletitre tbody').empty();
+        for (var i=0; i<data.length; i++) {
+         
+		 
+		 var edit = '<a onclick="edit('+i+')"> <i class="bi bi-pencil-fill"></i> </a>  ';
+         var remove = '<a onclick="remove('+data[i].id+')"> <i class="bi bi-trash3-fill"></i> </a>';
+		 
+		   var row = $('<tr><td>' + data[i].numero+ '</td><td>' + data[i].type + '</td><td>' + data[i].indice + '</td><td>' + data[i].indiceSpecial + '</td><td>' + data[i].cf.nom + '</td><td>'+edit+remove+'</td></tr>');
+            
+			$('#tabletitre tbody').append(row);
+        }
+}
+	        
+              
+	
+	
+		</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+﻿<!doctype html>
+<html>
+<head>
+    <script src="js/config.js"></script>
+     <script src="js/jquery.min.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="font/bootstrap-icons.css">
+    <title>Liste des conservations fonciers</title>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg  bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand text-danger" href="#">ANCFCC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">TITREFONCIER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cf-liste.html">CONSERVATIONFONCIER</a>
+                    </li>
+                  
+                   
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <br />
+    <div class="container mt-5">
+        <div class="p-3 bg-info  border border-info border-start-0 rounded-end text-danger fs-4 ">
+            INFORMATION SUR TITRE FONCIER
+        </div>
+        <br />
+        <br />
+        <form class="row g-3" id='formtitre' action=''>
+
+            <div class="col-md-4">
+                <label for="numeroTitre" class="form-label text-danger fs-5">numeroTitre</label>
+                <input type="text" class="form-control" id="numeroTitre" required />
+            </div>
+
+            <div class="col-md-4">
+                <label for="Indice" class="form-label text-danger fs-5">Indice</label>
+                <input type="text" class="form-control" id="Indice" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="IndiceSpecial" class="form-label text-danger fs-5">IndiceSpecial</label>
+                <input type="text" class="form-control" id="IndiceSpecial" required />
+            </div>
+            <div class="col-md-4"   id="idtype">
+                <select class="form-select text-danger fs-5"  aria-label="Default select example ">
+                    <option selected>Type</option>
+                    <option value="1">R</option>
+                    <option value="2">T</option> 
+
+                </select>
+            </div>
+            <div class="col-md-4"   id="idcft">
+                <select class="form-select text-danger fs-5"  aria-label="Default select example  ">
+              <option selected>CF</option>
+                   <option value="1">Rabat</option>
+                    <option value="2">Casa</option>
+                    <option value="2">Tanger</option>
+                    <option value="2">Sale</option>
+                    <option value="2">Marakech</option>
+
+                </select>
+            </div>
+            <div class="col-md-12">
+                <a class="btn btn-primary" id='buttonTiTre'>Enregistrer</a>
+            </div>
+        </form>
+    </div>
+  
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+    -->
+	<script>
+	 $(() => {
+      
+	  
+	  
+	  
+	   //Comeent recuperer les params via url avec Javascrirpt
+	  
+	  var getUrlParameter = function getUrlParameter(sParam){
+	     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+	         sURLVariables = sPageURL.split('&'),
+	        sParameterName,
+	  i;
+	  for(i = 0; i< sURLVariables.length; i++){
+	  sParameterName = sURLVariables[i].split('=');
+	  if(sParameterName[0] === sParam){
+	  return sParameterName[1] === undefined ? true : sParameterName[1];
+	  }
+	  }
+	  };
+	  
+	  
+	  
+	  	  // recuper depuis url
+	  var idUrl=getUrlParameter("id");
+	  var numeroUrl=getUrlParameter("numero");
+	  var typeUrl=getUrlParameter("type");
+	    var indiceUrl=getUrlParameter("indice");
+		  var indiceSpecialUrl=getUrlParameter("indiceSpecial");
+		    var cftUrl=getUrlParameter("cf");
+	
+	
+	  document.getElementById('numeroTitre').value = numeroUrl || ''; //  si nomUrl est undefined ou false ===> alors prendre ''
+	  document.getElementById('idtype').value = typeUrl || '';
+	    document.getElementById('Indice').value = indiceUrl || ''; 
+		  document.getElementById('IndiceSpecial').value = indiceSpecialUrl || ''; 
+		    document.getElementById('idcft').value = cftUrl || ''; 
+	  
+	 
+	 
+	 
+        // function will get executed 
+        // on click of submit button
+	 
+	   $("#buttonTiTre").click(function(ev) {
+            var data = {
+			"id" : idUrl || 0,
+			  "numero": $("#numeroTitre").val(),
+			  "type": $("#idtype").val(),
+			   "indice": $("#Indice").val(),
+			    "indiceSpecial": $("#IndiceSpecial").val(),
+				 "cf": $("#idcft").val(),
+			};
+	
+	
+	 var type ="";
+	 if(idUrl && idUrl > 0){
+	 //Ajax Modification
+	 type= "PUT";
+	 }else{
+	 type= "POST";
+	 
+	 }
+	 
+	 
+	 
+	 
+	 
+	  $.ajax({
+                type: type,
+                url: urlBackend+'/TitreFoncier',
+				dataType: 'json',
+				contentType: 'application/json',
+                data: JSON.stringify(data),
+				
+                success: function(data) {
+                      
+                    console.log("data = ",data);
+					window.location.href = urlFronend+"/index.html";
+                },
+				
+                error: function(data) {
+                      
+                    // Some error in ajax call
+                    alert("some Error");
+                }
+            });
+	 
+	 
+	});
+    });
+	
+	</script>
+</body>
+</html>

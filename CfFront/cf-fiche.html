@@ -1,0 +1,172 @@
+﻿<!doctype html>
+<html>
+<head>
+    <script src="js/config.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="font/bootstrap-icons.css">
+    <title>Fiche des conservations fonciers</title>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg  bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand text-danger" href="#">ANCFCC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">TITREFONCIER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cf-liste.html">CONSERVATIONFONCIER</a>
+                    </li>
+
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <br />
+    <div class="container mt-5">
+        <div class="p-3 bg-info  border border-info border-start-0 rounded-end text-danger fs-4 ">
+        CONSERVATION FONCIERE
+        </div>
+        <br />
+        <br />
+        <form class="row g-3" id='formcf' action=''>
+            <!-- <div class="col-md-4">
+                <label for="ID" class="form-label text-danger fs-5">ID</label>
+                <input type="text" class="form-control" id="ID" required />
+            </div> -->
+            <div class="col-md-4">
+                <label for="nom" class="form-label text-danger fs-5">Nom</label>
+                <input type="text" class="form-control" id="nom" required maxlength="50" />
+            </div>
+            <div class="col-md-4">
+                <label for="code" class="form-label text-danger fs-5">Code</label>
+                <input type="text" class="form-control" id="code" required maxlength="2" />
+            </div>
+
+            <div class="col-md-12">
+                <a class="btn btn-primary" id='buttonEnregistrer'>Enregistrer</a>
+            </div>
+        </form>
+    </div>
+   
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+ <!--   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>  -->
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+    -->
+	
+	<script>
+	
+	  $(() => {
+	  //Comeent recuperer les params via url avec Javascrirpt
+	  
+	  var getUrlParameter = function getUrlParameter(sParam){
+	     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+	         sURLVariables = sPageURL.split('&'),
+	        sParameterName,
+	  i;
+	  for(i = 0; i< sURLVariables.length; i++){
+	  sParameterName = sURLVariables[i].split('=');
+	  if(sParameterName[0] === sParam){
+	  return sParameterName[1] === undefined ? true : sParameterName[1];
+	  }
+	  }
+	  };
+	  
+	  
+	  
+	  	  // recuper depuis url
+	  var idUrl=getUrlParameter("id");
+	  var nomUrl=getUrlParameter("nom");
+	  var codeUrl=getUrlParameter("code");
+	
+	
+	  document.getElementById('nom').value = nomUrl || ''; //  si nomUrl est undefined ou false ===> alors prendre ''
+	  document.getElementById('code').value = codeUrl || '';
+	  
+	
+	
+	
+	  
+        // function will get executed 
+        // on click of submit button
+        $("#buttonEnregistrer").click(function(ev) {
+            var data = {
+			"id" : idUrl || 0,
+			  "nom": $("#nom").val(),
+			  "code": $("#code").val(),
+			};
+	
+	
+	 var type ="";
+	 if(idUrl && idUrl > 0){
+	 //Ajax Modification
+	 type= "PUT";
+	 }else{
+	 type= "POST";
+	 
+	 }
+	 
+	 
+	 $.ajax({
+                type: type,
+                url: urlBackend+'/CF',
+				dataType: 'json',
+				contentType: 'application/json',
+                data: JSON.stringify(data),
+				
+                success: function(data) {
+                      
+                    console.log("data = ",data);
+					window.location.href = urlFronend+"/cf-liste.html";
+                },
+				
+                error: function(data) {
+                      
+                    // Some error in ajax call
+                    alert("some Error");
+                }
+            });
+			
+			
+			
+			
+	});
+	
+	
+	
+	
+	 
+	
+	
+    });
+	 
+	 
+	
+	
+	</script>
+	
+	
+</body>
+</html>
