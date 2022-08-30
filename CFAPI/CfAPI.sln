@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CfAPI", "CfAPI\CfAPI.csproj", "{708DBFE2-89F5-4932-862F-44E2941458DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CfFront", "CfFront", "{4FB990DF-E286-4D37-81D4-B238273D2EED}"
+	ProjectSection(SolutionItems) = preProject
+		..\Cf-Front\cf-fiche.html = ..\Cf-Front\cf-fiche.html
+		..\Cf-Front\cf-liste.html = ..\Cf-Front\cf-liste.html
+		Cf-Front\style.css = Cf-Front\style.css
+		Cf-Front\titre-fiche.html = Cf-Front\titre-fiche.html
+		..\Cf-Front\titre-liste.html = ..\Cf-Front\titre-liste.html
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{708DBFE2-89F5-4932-862F-44E2941458DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{708DBFE2-89F5-4932-862F-44E2941458DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{708DBFE2-89F5-4932-862F-44E2941458DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{708DBFE2-89F5-4932-862F-44E2941458DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D0CB521-A3A3-4AF5-9C1D-31EFAE815B96}
+	EndGlobalSection
+EndGlobal
